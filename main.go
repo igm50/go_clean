@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", HomeHandler)
+	r.HandleFunc("/", homeHandler)
 
 	srv := http.Server{
 		Handler:      r,
@@ -19,10 +20,11 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 	}
 
-	srv.ListenAndServe()
+	log.Println("Start server.")
+	log.Fatal(srv.ListenAndServe())
 }
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
+func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Hello world!")
 }
