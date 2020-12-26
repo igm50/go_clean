@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/mux"
+)
+
+var (
+	addr = os.Getenv("ADDRESS")
 )
 
 func main() {
@@ -15,7 +20,7 @@ func main() {
 
 	srv := http.Server{
 		Handler:      r,
-		Addr:         "127.0.0.1:8000",
+		Addr:         addr,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 	}
