@@ -12,12 +12,12 @@ services:
     working_dir: /usr/src/app
     environment:
       ADDRESS: app:8000
-  # database:
-  #   image: mysql:8.0
-  #   restart: always
-  #   ports:
-  #     - 3306:3306
-  #   volumes:
-  #     - ./db/initdb:/docker-entrypoint-initdb.d
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: password
+  database:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/initdb:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password

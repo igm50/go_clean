@@ -15,8 +15,11 @@ var (
 )
 
 func main() {
+	db := dbConnection()
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
+	r.HandleFunc("/cities", buildCityHandler(db))
 
 	srv := http.Server{
 		Handler:      r,
