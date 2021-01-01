@@ -15,11 +15,24 @@ var (
 )
 
 func main() {
-	db := dbConnection()
 
+	// build infrastructure
+	db := dbConnection()
+	cityDatabase := newCityDatabase(db)
+
+	// build usecase layer
+	cityRepository := newCityRepositoryImpl(&cityDatabase)
+	cityUsecase := newCityInteractor(&cityRepository)
+
+	// build controller layer
+	cityPresenter := newCityPresenter()
+	errorPresenter := newErrorPresenter()
+	cityController := buildCityController(&cityUsecase, &cityPresenter, &errorPresenter)
+
+	// build server
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
-	r.HandleFunc("/cities", buildCityHandler(db))
+	r.HandleFunc("/cities", cityController)
 
 	srv := http.Server{
 		Handler:      r,
@@ -28,6 +41,7 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 	}
 
+	// start server
 	log.Println("Start server.")
 	log.Fatal(srv.ListenAndServe())
 }
