@@ -16,7 +16,7 @@ var (
 
 func main() {
 
-	// build infrastructure
+	// build infrastructure layer
 	db := dbConnection()
 	cityDatabase := newCityDatabase(db)
 
@@ -32,7 +32,7 @@ func main() {
 	// build server
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
-	r.HandleFunc("/cities", cityController)
+	r.HandleFunc("/cities/{id}", cityController)
 
 	srv := http.Server{
 		Handler:      r,

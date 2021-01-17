@@ -1,11 +1,7 @@
 package main
 
-import (
-	"log"
-)
-
 type cityRepository interface {
-	fetchAll() []city
+	fetchByID(i fetchCityInput) city
 }
 
 type cityRepositoryImpl struct {
@@ -16,13 +12,6 @@ func newCityRepositoryImpl(d *cityDatabase) cityRepository {
 	return cityRepositoryImpl{d}
 }
 
-func (r cityRepositoryImpl) fetchAll() []city {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Fatalln(r)
-			panic(r)
-		}
-	}()
-
-	return r.database.fetchAll()
+func (r cityRepositoryImpl) fetchByID(i fetchCityInput) city {
+	return r.database.fetchByID(int(*i.id))
 }

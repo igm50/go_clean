@@ -14,5 +14,7 @@ func newCityInteractor(r *cityRepository) cityUseCase {
 
 func (i cityInteractor) fetch(f fetchCityInput) fetchCityOutput {
 	r := *i.repository
-	return newFetchCityOutput(r.fetchAll())
+	city := r.fetchByID(f)
+
+	return newFetchCityOutput(city)
 }

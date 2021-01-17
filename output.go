@@ -1,9 +1,9 @@
 package main
 
 type fetchCityOutput struct {
-	Cities []city
+	city city
 }
 
-func newFetchCityOutput(c []city) fetchCityOutput {
+func newFetchCityOutput(c city) fetchCityOutput {
 	return fetchCityOutput{c}
 }

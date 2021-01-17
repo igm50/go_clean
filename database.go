@@ -14,34 +14,20 @@ func newCityDatabase(db *sql.DB) cityDatabase {
 	return cityDatabase{db}
 }
 
-func (d *cityDatabase) fetchAll() []city {
-	stmt, sErr := d.db.Prepare("SELECT * FROM city")
-	if sErr != nil {
-		panic(sErr)
+func (d *cityDatabase) fetchByID(id int) city {
+	row := d.db.QueryRow("SELECT * FROM city WHERE id = ?", id)
+
+	var (
+		fetchedID   int
+		name        string
+		countryCode string
+		district    string
+		population  int
+	)
+
+	if err := row.Scan(&fetchedID, &name, &countryCode, &district, &population); err != nil {
+		panic(err)
 	}
 
-	rows, qErr := stmt.Query()
-	if qErr != nil {
-		panic(qErr)
-	}
-	defer rows.Close()
-
-	var result []city
-	for rows.Next() {
-		var (
-			id          int
-			name        string
-			countryCode string
-			district    string
-			population  int
-		)
-
-		if err := rows.Scan(&id, &name, &countryCode, &district, &population); err != nil {
-			panic(err)
-		}
-
-		result = append(result, newCity(id, name, countryCode, district, population))
-	}
-
-	return result
+	return newCity(cityID(fetchedID), name, countryCode, district, population)
 }
